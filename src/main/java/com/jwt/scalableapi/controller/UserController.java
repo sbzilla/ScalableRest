@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import io.swagger.annotations.Authorization;
 import com.jwt.scalableapi.dto.UserDataDTO;
 import com.jwt.scalableapi.dto.UserResponseDTO;
 import com.jwt.scalableapi.model.User;
+import com.jwt.scalableapi.model.UserResponse;
 import com.jwt.scalableapi.service.UserService;
 
 @RestController
@@ -97,6 +100,13 @@ public class UserController {
   @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
   public String refresh(HttpServletRequest req) {
     return userService.refresh(req.getRemoteUser());
+  }
+  
+  @MessageMapping("/user")
+  @SendTo("/topic/user")
+  public UserResponse getUser(User user) {
+
+      return new UserResponse("Hi " + user.getUsername());
   }
 
 }
