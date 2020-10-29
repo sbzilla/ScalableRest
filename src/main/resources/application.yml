@@ -21,7 +21,7 @@ spring:
           new_generator_mappings: false
 
 server:
-   port: 8989 # This is the default port anyway, but you can change it here
+   port: 8091 # This is the default port anyway, but you can change it here
 
 security:
   jwt:
